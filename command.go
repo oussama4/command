@@ -30,12 +30,13 @@ func (c *Commander) Register(cmd Command) {
 }
 
 func (c *Commander) Run() error {
-	for _, cmd := range c.commands {
-		if cmd.Name() == os.Args[1] {
-			return cmd.Run()
+	if len(os.Args) > 1 {
+		for _, cmd := range c.commands {
+			if cmd.Name() == os.Args[1] {
+				return cmd.Run()
+			}
 		}
 	}
-
 	c.Usage()
 	return nil
 }
