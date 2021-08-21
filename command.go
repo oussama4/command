@@ -17,6 +17,14 @@ type Commander struct {
 	commands []Command
 }
 
+func New(name string) *Commander {
+	cmder := &Commander{
+		name: name,
+	}
+
+	return cmder
+}
+
 func (c *Commander) Register(cmd Command) {
 	c.commands = append(c.commands, cmd)
 }
