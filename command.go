@@ -7,14 +7,14 @@ import (
 )
 
 type Command interface {
-	Name() string
-	Usage() string
+	Synopsis() string
+	Help() string
 	Run() error
 }
 
 type Commander struct {
 	name     string
-	commands []Command
+	commands map[string]Command
 }
 
 func New(name string) *Commander {
@@ -25,14 +25,14 @@ func New(name string) *Commander {
 	return cmder
 }
 
-func (c *Commander) Register(cmd Command) {
-	c.commands = append(c.commands, cmd)
+func (c *Commander) Register(name string, cmd Command) {
+	c.commands[name] = cmd
 }
 
 func (c *Commander) Run() error {
 	if len(os.Args) > 1 {
-		for _, cmd := range c.commands {
-			if cmd.Name() == os.Args[1] {
+		for k, cmd := range c.commands {
+			if k == os.Args[1] {
 				return cmd.Run()
 			}
 		}
@@ -42,8 +42,8 @@ func (c *Commander) Run() error {
 }
 
 func (c *Commander) Usage() {
-	fmt.Printf("%s <command> [args]", c.name)
+	fmt.Printf("%s <command> [args]\n", c.name)
 	for _, cmd := range c.commands {
-		fmt.Println(cmd.Usage())
+		fmt.Println(cmd.Synopsis())
 	}
 }
