@@ -19,7 +19,8 @@ type Commander struct {
 
 func New(name string) *Commander {
 	cmder := &Commander{
-		name: name,
+		name:     name,
+		commands: make(map[string]Command),
 	}
 
 	return cmder
